@@ -38,11 +38,12 @@ var zonesCmd = &cobra.Command{
 		table.Header("Name", "Status", "ID")
 
 		for _, zone := range zones {
-			table.Append(zone.Name, string(zone.Status), zone.ID)
+			if err := table.Append(zone.Name, string(zone.Status), zone.ID); err != nil {
+				return err
+			}
 		}
 
-		table.Render()
-		return nil
+		return table.Render()
 	},
 }
 

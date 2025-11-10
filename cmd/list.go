@@ -161,10 +161,11 @@ func outputTable(records []cloudflare.DNSRecord) error {
 		if record.Proxied != nil && *record.Proxied {
 			proxied = "✓"
 		}
-		table.Append(record.Type, record.Name, record.Content, ttlStr, priority, proxied)
+		if err := table.Append(record.Type, record.Name, record.Content, ttlStr, priority, proxied); err != nil {
+			return err
+		}
 	}
-	table.Render()
-	return nil
+	return table.Render()
 }
 
 func init() {
