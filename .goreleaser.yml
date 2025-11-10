@@ -1,0 +1,209 @@
+version: 2
+
+before:
+  hooks:
+    - go mod tidy
+    - go mod download
+
+builds:
+  - id: cfcli
+    binary: cfcli
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - darwin
+      - windows
+      - freebsd
+      - openbsd
+      - netbsd
+    goarch:
+      - amd64
+      - arm64
+      - arm
+      - 386
+    goarm:
+      - "6"
+      - "7"
+    ignore:
+      - goos: darwin
+        goarch: 386
+      - goos: darwin
+        goarch: arm
+      - goos: windows
+        goarch: arm64
+      - goos: windows
+        goarch: arm
+    ldflags:
+      - -s -w
+      - -X main.version={{.Version}}
+      - -X main.commit={{.Commit}}
+      - -X main.date={{.Date}}
+    main: .
+
+archives:
+  - id: cfcli
+    format: tar.gz
+    name_template: >-
+      {{ .ProjectName }}_
+      {{- .Version }}_
+      {{- title .Os }}_
+      {{- if eq .Arch "amd64" }}x86_64
+      {{- else if eq .Arch "386" }}i386
+      {{- else }}{{ .Arch }}{{ end }}
+      {{- if .Arm }}v{{ .Arm }}{{ end }}
+    format_overrides:
+      - goos: windows
+        format: zip
+    files:
+      - README.md
+      - LICENSE*
+
+checksum:
+  name_template: 'checksums.txt'
+
+snapshot:
+  version_template: "{{ incpatch .Version }}-next"
+
+changelog:
+  sort: asc
+  use: github
+  filters:
+    exclude:
+      - '^docs:'
+      - '^test:'
+      - '^ci:'
+      - Merge pull request
+      - Merge branch
+  groups:
+    - title: Features
+      regexp: '^.*?feat(\([[:word:]]+\))??!?:.+$'
+      order: 0
+    - title: Bug Fixes
+      regexp: '^.*?fix(\([[:word:]]+\))??!?:.+$'
+      order: 1
+    - title: Performance Improvements
+      regexp: '^.*?perf(\([[:word:]]+\))??!?:.+$'
+      order: 2
+    - title: Others
+      order: 999
+
+release:
+  github:
+    owner: skyline
+    name: cfcli
+  draft: false
+  prerelease: auto
+  mode: replace
+  header: |
+    ## cfcli {{ .Tag }} ({{ .Date }})
+
+    Cloudflare DNS CLI - Manage your Cloudflare DNS records from the command line.
+
+    ### Installation
+
+    Download the appropriate binary for your platform from the assets below.
+
+    #### Linux/macOS
+    ```bash
+    # Download the binary (replace with your platform)
+    tar -xzf cfcli_{{ .Version }}_Linux_x86_64.tar.gz
+    
+    # Make it executable
+    chmod +x cfcli
+    
+    # Move to PATH
+    sudo mv cfcli /usr/local/bin/
+    ```
+
+    #### Windows
+    ```powershell
+    # Extract the zip file and add cfcli.exe to your PATH
+    ```
+
+  footer: |
+    **Full Changelog**: https://github.com/skyline/cfcli/compare/{{ .PreviousTag }}...{{ .Tag }}
+
+    ## Checksums
+
+    All checksums are available in `checksums.txt`
+
+brews:
+  - name: cfcli
+    repository:
+      owner: skyline
+      name: homebrew-tap
+      token: "{{ .Env.HOMEBREW_TAP_GITHUB_TOKEN }}"
+    directory: Formula
+    homepage: https://github.com/skyline/cfcli
+    description: "Cloudflare DNS CLI - Manage Cloudflare DNS records from the command line"
+    license: MIT
+    test: |
+      system "#{bin}/cfcli --help"
+    install: |
+      bin.install "cfcli"
+
+scoops:
+  - name: cfcli
+    repository:
+      owner: skyline
+      name: scoop-bucket
+      token: "{{ .Env.SCOOP_BUCKET_GITHUB_TOKEN }}"
+    homepage: https://github.com/skyline/cfcli
+    description: "Cloudflare DNS CLI - Manage Cloudflare DNS records from the command line"
+    license: MIT
+
+nfpms:
+  - id: cfcli
+    package_name: cfcli
+    vendor: skyline
+    homepage: https://github.com/skyline/cfcli
+    maintainer: skyline
+    description: "Cloudflare DNS CLI - Manage Cloudflare DNS records from the command line"
+    license: MIT
+    formats:
+      - deb
+      - rpm
+      - apk
+    bindir: /usr/bin
+
+dockers:
+  - image_templates:
+      - "ghcr.io/skyline/cfcli:{{ .Version }}-amd64"
+      - "ghcr.io/skyline/cfcli:latest-amd64"
+    use: buildx
+    dockerfile: Dockerfile
+    build_flag_templates:
+      - "--platform=linux/amd64"
+      - "--label=org.opencontainers.image.created={{.Date}}"
+      - "--label=org.opencontainers.image.title={{.ProjectName}}"
+      - "--label=org.opencontainers.image.revision={{.FullCommit}}"
+      - "--label=org.opencontainers.image.version={{.Version}}"
+    goarch: amd64
+
+  - image_templates:
+      - "ghcr.io/skyline/cfcli:{{ .Version }}-arm64"
+      - "ghcr.io/skyline/cfcli:latest-arm64"
+    use: buildx
+    dockerfile: Dockerfile
+    build_flag_templates:
+      - "--platform=linux/arm64"
+      - "--label=org.opencontainers.image.created={{.Date}}"
+      - "--label=org.opencontainers.image.title={{.ProjectName}}"
+      - "--label=org.opencontainers.image.revision={{.FullCommit}}"
+      - "--label=org.opencontainers.image.version={{.Version}}"
+    goarch: arm64
+
+docker_manifests:
+  - name_template: ghcr.io/skyline/cfcli:{{ .Version }}
+    image_templates:
+      - ghcr.io/skyline/cfcli:{{ .Version }}-amd64
+      - ghcr.io/skyline/cfcli:{{ .Version }}-arm64
+
+  - name_template: ghcr.io/skyline/cfcli:latest
+    image_templates:
+      - ghcr.io/skyline/cfcli:latest-amd64
+      - ghcr.io/skyline/cfcli:latest-arm64
+
+announce:
+  skip: true
