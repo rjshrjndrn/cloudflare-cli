@@ -47,7 +47,13 @@ jobs:
         run: go vet ./...
 
       - name: Run tests
-        run: go test -v -race -coverprofile=coverage.txt -covermode=atomic ./...
+        run: |
+          if [ "${{ runner.os }}" = "Windows" ]; then
+            go test -v -coverprofile=coverage.txt -covermode=atomic ./...
+          else
+            go test -v -race -coverprofile=coverage.txt -covermode=atomic ./...
+          fi
+        shell: bash
 
       - name: Upload coverage to Codecov
         if: matrix.os == 'ubuntu-latest' && matrix.go-version == '1.23'
@@ -72,7 +78,7 @@ jobs:
       - name: Run golangci-lint
         uses: golangci/golangci-lint-action@v6
         with:
-          version: latest
+          version: v1.62
           args: --timeout=5m
 
   build:
