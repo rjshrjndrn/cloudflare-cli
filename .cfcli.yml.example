@@ -1,0 +1,26 @@
+# Example configuration file for cfcli
+# Copy this file to ~/.cfcli.yml and update with your credentials
+
+# Simple single account setup
+defaults:
+    token: your-cloudflare-api-token
+    domain: example.com
+
+# Multi-account setup
+# Uncomment and configure if you have multiple accounts
+# defaults:
+#     account: work
+# accounts:
+#     work:
+#         token: your-work-cloudflare-token
+#         domain: work-domain.com
+#     personal:
+#         token: your-personal-cloudflare-token
+#         domain: personal-domain.com
+
+# Using API Key (legacy) instead of API Token
+# If using API Key, you need to provide email as well
+# defaults:
+#     token: your-cloudflare-api-key
+#     email: you@example.com
+#     domain: example.com
