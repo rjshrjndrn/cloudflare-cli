@@ -61,7 +61,7 @@ docker pull ghcr.io/skyline/cfcli:latest
 docker run --rm -e CF_API_KEY=your-token -e CF_API_DOMAIN=example.com ghcr.io/skyline/cfcli:latest ls
 
 # Or with config file
-docker run --rm -v ~/.cfcli.yml:/root/.cfcli.yml ghcr.io/skyline/cfcli:latest ls
+ docker run --rm -v ~/.config/cfcli/config.yaml:/root/.config/cfcli/config.yaml ghcr.io/skyline/cfcli:latest ls
 ```
 
 ### From Source
@@ -75,7 +75,7 @@ sudo make install
 
 ## Configuration
 
-You can configure `cfcli` using a YAML configuration file located at `$HOME/.cfcli.yml`.
+You can configure `cfcli` using a YAML configuration file located at `$HOME/.config/cfcli/config.yaml`.
 
 ### Single Account Setup
 
@@ -212,7 +212,7 @@ cfcli -d example.com -k <token> -t A rm test -q content:1.1.1.1
 Flags:
   -u, --account string   Named account from config file
   -a, --activate         Activate cloudflare (enable proxy) after creating record
-  -c, --config string    config file (default is $HOME/.cfcli.yml)
+  -c, --config string    config file (default is $HOME/.config/cfcli/config.yaml)
   -d, --domain string    Domain to operate on
   -e, --email string     Email of your cloudflare account
   -f, --format string    Output format: table, json, csv (default "table")
@@ -254,7 +254,7 @@ cfcli -d example.com -k <token> -t CNAME rm test.example.com
 
 ### Using Config File
 
-Create `~/.cfcli.yml`:
+Create `~/.config/cfcli/config.yaml`:
 ```yaml
 defaults:
     token: tJzwm7RiIrLz9iQiHMAtjFrkFg1Z1cA7ap_1yGTf

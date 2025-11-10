@@ -51,7 +51,8 @@ You should see a table with your Cloudflare zones!
 
 ```bash
 # Create the config file
-cat > ~/.cfcli.yml << EOF
+mkdir -p ~/.config/cfcli
+cat > ~/.config/cfcli/config.yaml << EOF
 defaults:
     token: YOUR_TOKEN
     domain: example.com
@@ -127,7 +128,7 @@ cfcli -d example.com -f csv ls > records.csv
 ### Manage Multiple Accounts
 
 ```yaml
-# ~/.cfcli.yml
+# ~/.config/cfcli/config.yaml
 defaults:
     account: work
 accounts:
@@ -175,7 +176,7 @@ Use `sudo` when moving the binary to `/usr/local/bin/` or install to `~/bin/` in
 
 ## Tips
 
-1. **Use config file**: Save time by storing your credentials in `~/.cfcli.yml`
+1. **Use config file**: Save time by storing your credentials in `~/.config/cfcli/config.yaml`
 2. **Tab completion**: Generate shell completions with `cfcli completion bash|zsh|fish`
 3. **Short names**: Use `ls` instead of `listrecords`, `rm` instead of `remove`
 4. **Filters**: Use `-q` for powerful filtering: `-q content:1.1.1.1,type:A`

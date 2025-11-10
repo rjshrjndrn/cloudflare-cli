@@ -54,7 +54,7 @@ func init() {
 	cobra.OnInitialize(initConfig)
 
 	// Global flags
-	rootCmd.PersistentFlags().StringVarP(&cfgFile, "config", "c", "", "config file (default is $HOME/.cfcli.yml)")
+	rootCmd.PersistentFlags().StringVarP(&cfgFile, "config", "c", "", "config file (default is $HOME/.config/cfcli/config.yaml)")
 	rootCmd.PersistentFlags().StringVarP(&email, "email", "e", "", "Email of your cloudflare account")
 	rootCmd.PersistentFlags().StringVarP(&token, "token", "k", "", "API token for your cloudflare account")
 	rootCmd.PersistentFlags().StringVarP(&account, "account", "u", "", "Named account from config file")

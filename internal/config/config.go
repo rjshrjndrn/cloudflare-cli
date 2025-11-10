@@ -41,9 +41,10 @@ func LoadConfig(configPath, accountName string) (*Config, error) {
 		if err != nil {
 			return nil, err
 		}
-		v.AddConfigPath(home)
-		v.SetConfigName(".cfcli")
-		v.SetConfigType("yml")
+		configDir := filepath.Join(home, ".config", "cfcli")
+		v.AddConfigPath(configDir)
+		v.SetConfigName("config")
+		v.SetConfigType("yaml")
 	}
 
 	// Read config file (optional)
@@ -99,5 +100,5 @@ func GetDefaultConfigPath() string {
 	if err != nil {
 		return ""
 	}
-	return filepath.Join(home, ".cfcli.yml")
+	return filepath.Join(home, ".config", "cfcli", "config.yaml")
 }
