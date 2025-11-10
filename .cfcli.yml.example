@@ -1,3 +1,4 @@
+# vim: set ft=yaml:
 # Example configuration file for cfcli
 # Copy this file to ~/.config/cfcli/config.yaml and update with your credentials
 
