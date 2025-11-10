@@ -1,4 +1,4 @@
-module github.com/skyline/cfcli
+module github.com/rjshrjndrn/cloudflare-cli
 
 go 1.23.0
 

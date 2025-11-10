@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/skyline/cfcli/cmd"
+	"github.com/rjshrjndrn/cloudflare-cli/cmd"
 )
 
 var (

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/skyline/cfcli/internal/config"
+	"github.com/rjshrjndrn/cloudflare-cli/internal/config"
 	"github.com/spf13/cobra"
 )
 

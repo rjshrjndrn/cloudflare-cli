@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/skyline/cfcli/internal/cloudflare"
+	"github.com/rjshrjndrn/cloudflare-cli/internal/cloudflare"
 	"github.com/spf13/cobra"
 )
 
